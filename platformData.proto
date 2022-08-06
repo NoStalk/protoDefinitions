@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./proto/;platformDatapb";
+
+message Submission {
+    string date = 1;
+    string language = 2;
+    string problemStatus = 3;
+    string problemTitle = 4;
+    string problemLink = 5;
+    string codeLink = 6;
+}
+message Contest {
+    string contestName = 1;
+    double rank = 2;
+    double rating = 3;
+    double contestId = 4;
+    string contestDate = 5;
+}
+
+message SubmissionResponse {
+  repeated Submission submissions = 1;
+  
+}
+
+message ContestResponse{
+repeated Contest contests = 1;
+}
+
+message Request {
+  string email = 1;
+  string userHandle = 2;
+}
+
+message OperationStatus {
+  bool status = 1;
+  string userHandle = 2;
+}
+
+service FetchPlatformData {
+  rpc getUserSubmissions(Request) returns (SubmissionResponse){};
+  rpc getUserContests(Request) returns (ContestResponse);
+  rpc getAllUserData(stream Request) returns (stream OperationStatus){};
+}
