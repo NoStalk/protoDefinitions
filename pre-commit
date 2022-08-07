@@ -1,0 +1,8 @@
+#This hook auto generates go files with grpc definitions on commit
+#If used as a submodule, place this file in .git/modules/protoDefinitions/hooks/ folder
+#If used as a standalone repo, place this file in .git/hooks/ folder
+
+protoc --go_out=. --go_opt=paths=source_relative \
+--go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    platformData.proto
+git add *.go

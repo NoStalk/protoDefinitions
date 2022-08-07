@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: proto/platformData.proto
+// source: platformData.proto
 
 package platformDatapb
 
@@ -206,5 +206,5 @@ var FetchPlatformData_ServiceDesc = grpc.ServiceDesc{
 			ClientStreams: true,
 		},
 	},
-	Metadata: "proto/platformData.proto",
+	Metadata: "platformData.proto",
 }
