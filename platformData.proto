@@ -16,7 +16,7 @@ message Contest {
     string contestName = 1;
     double rank = 2;
     double rating = 3;
-    double contestId = 4;
+    string contestId = 4;
     string contestDate = 5;
 }
 
