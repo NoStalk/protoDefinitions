@@ -26,7 +26,12 @@ message SubmissionResponse {
 }
 
 message ContestResponse{
-repeated Contest contests = 1;
+  repeated Contest contests = 1;
+}
+
+message CompleteUserDataResponse{
+  repeated Submission submissions = 1;
+  repeated Contest contests = 2;
 }
 
 message Request {
@@ -39,8 +44,10 @@ message OperationStatus {
   string userHandle = 2;
 }
 
+
 service FetchPlatformData {
   rpc getUserSubmissions(Request) returns (SubmissionResponse){};
   rpc getUserContests(Request) returns (ContestResponse){};
+  rpc getUserSubmissionAndContest(Request) returns (CompleteUserDataResponse){};
   rpc getAllUserData(stream Request) returns (stream OperationStatus){};
 }
