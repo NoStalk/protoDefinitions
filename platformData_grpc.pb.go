@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type FetchPlatformDataClient interface {
 	GetUserSubmissions(ctx context.Context, in *Request, opts ...grpc.CallOption) (*SubmissionResponse, error)
 	GetUserContests(ctx context.Context, in *Request, opts ...grpc.CallOption) (*ContestResponse, error)
+	GetUserSubmissionAndContest(ctx context.Context, in *Request, opts ...grpc.CallOption) (*CompleteUserDataResponse, error)
 	GetAllUserData(ctx context.Context, opts ...grpc.CallOption) (FetchPlatformData_GetAllUserDataClient, error)
 }
 
@@ -47,6 +48,15 @@ func (c *fetchPlatformDataClient) GetUserSubmissions(ctx context.Context, in *Re
 func (c *fetchPlatformDataClient) GetUserContests(ctx context.Context, in *Request, opts ...grpc.CallOption) (*ContestResponse, error) {
 	out := new(ContestResponse)
 	err := c.cc.Invoke(ctx, "/proto.FetchPlatformData/getUserContests", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fetchPlatformDataClient) GetUserSubmissionAndContest(ctx context.Context, in *Request, opts ...grpc.CallOption) (*CompleteUserDataResponse, error) {
+	out := new(CompleteUserDataResponse)
+	err := c.cc.Invoke(ctx, "/proto.FetchPlatformData/getUserSubmissionAndContest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,6 +100,7 @@ func (x *fetchPlatformDataGetAllUserDataClient) Recv() (*OperationStatus, error)
 type FetchPlatformDataServer interface {
 	GetUserSubmissions(context.Context, *Request) (*SubmissionResponse, error)
 	GetUserContests(context.Context, *Request) (*ContestResponse, error)
+	GetUserSubmissionAndContest(context.Context, *Request) (*CompleteUserDataResponse, error)
 	GetAllUserData(FetchPlatformData_GetAllUserDataServer) error
 	mustEmbedUnimplementedFetchPlatformDataServer()
 }
@@ -103,6 +114,9 @@ func (UnimplementedFetchPlatformDataServer) GetUserSubmissions(context.Context, 
 }
 func (UnimplementedFetchPlatformDataServer) GetUserContests(context.Context, *Request) (*ContestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserContests not implemented")
+}
+func (UnimplementedFetchPlatformDataServer) GetUserSubmissionAndContest(context.Context, *Request) (*CompleteUserDataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserSubmissionAndContest not implemented")
 }
 func (UnimplementedFetchPlatformDataServer) GetAllUserData(FetchPlatformData_GetAllUserDataServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetAllUserData not implemented")
@@ -156,6 +170,24 @@ func _FetchPlatformData_GetUserContests_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FetchPlatformData_GetUserSubmissionAndContest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FetchPlatformDataServer).GetUserSubmissionAndContest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.FetchPlatformData/getUserSubmissionAndContest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FetchPlatformDataServer).GetUserSubmissionAndContest(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FetchPlatformData_GetAllUserData_Handler(srv interface{}, stream grpc.ServerStream) error {
 	return srv.(FetchPlatformDataServer).GetAllUserData(&fetchPlatformDataGetAllUserDataServer{stream})
 }
@@ -196,6 +228,10 @@ var FetchPlatformData_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getUserContests",
 			Handler:    _FetchPlatformData_GetUserContests_Handler,
+		},
+		{
+			MethodName: "getUserSubmissionAndContest",
+			Handler:    _FetchPlatformData_GetUserSubmissionAndContest_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

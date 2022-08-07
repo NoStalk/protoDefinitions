@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package proto;
 
-option go_package = "./proto/;platformDatapb";
+option go_package = "./protoDefinitions/;platformDatapb";
 
 message Submission {
     string date = 1;
