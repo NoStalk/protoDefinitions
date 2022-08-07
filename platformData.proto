@@ -41,6 +41,6 @@ message OperationStatus {
 
 service FetchPlatformData {
   rpc getUserSubmissions(Request) returns (SubmissionResponse){};
-  rpc getUserContests(Request) returns (ContestResponse);
+  rpc getUserContests(Request) returns (ContestResponse){};
   rpc getAllUserData(stream Request) returns (stream OperationStatus){};
 }
